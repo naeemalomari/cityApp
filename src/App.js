@@ -62,9 +62,9 @@ class App extends React.Component {
           </Form.Group>
         </Form>
         </Row>
-        <Row> 
+        <Row className= "mr-5"> 
         <p>
-          Area Name :
+          City Name :
           {this.state.display_name}
         </p>
         <p> longitude :
@@ -76,7 +76,7 @@ class App extends React.Component {
         </p>
         {
           this.state.showMap &&
-          < img src={`https://maps.locationiq.com/v3/staticmap?key=pk.63c388e715285390690165b87c5f6e49&center=${this.state.lat},${this.state.lon}`} alt='map' />
+          < img className="img-thumbnail ,rounded mx-auto d-block , mb-30"src={`https://maps.locationiq.com/v3/staticmap?key=pk.63c388e715285390690165b87c5f6e49&center=${this.state.lat},${this.state.lon}&zoom=15`} alt='map' style={{width : "18rem"}} />
         }
         {
         this.displayError&& this.state.errorMsg
