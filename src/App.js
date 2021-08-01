@@ -14,6 +14,9 @@ class App extends React.Component {
       lat: '',
       lon: '',
       showMap: false,
+      errorMsg :'bad response',
+      dislpayError :false,
+
     }
   }
 
@@ -22,17 +25,27 @@ class App extends React.Component {
     let cityName = event.target.city.value;
     console.log(cityName);
     // let key ='pk.63c388e715285390690165b87c5f6e49';
-    let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`
+    let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`;
 
+
+    try{
+      
     let location = await axios.get(URL);
     // console.log(location.data[0].display_name)
     this.setState({
       display_name: location.data[0].display_name,
       lon: location.data[0].lon,
       lat: location.data[0].lat,
-      showMap: true
+      showMap: true,
 
     })
+    }
+    catch {
+      this.setState({
+        displayMap:false,
+        displayError :true,
+      })
+    }
   }
   render() {
     return (
@@ -49,21 +62,24 @@ class App extends React.Component {
           </Form.Group>
         </Form>
         </Row>
-        <Row> 
+        <Row className= "mr-5"> 
         <p>
-          Area Name :
+          City Name :
           {this.state.display_name}
         </p>
         <p> longitude :
-          ({this.state.lon})
+          {this.state.lon}
         </p>
         <p>
           Latitude :
-          ({this.state.lat})
+          {this.state.lat}
         </p>
         {
           this.state.showMap &&
-          < img src={`https://maps.locationiq.com/v3/staticmap?key=pk.63c388e715285390690165b87c5f6e49&center=${this.state.lat},${this.state.lon}`} alt='map' />
+          < img className="img-thumbnail ,rounded mx-auto d-block , mb-30"src={`https://maps.locationiq.com/v3/staticmap?key=pk.63c388e715285390690165b87c5f6e49&center=${this.state.lat},${this.state.lon}&zoom=15`} alt='map' style={{width : "18rem"}} />
+        }
+        {
+        this.displayError&& this.state.errorMsg
         }
         </Row>
       </Container>
