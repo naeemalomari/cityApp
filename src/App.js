@@ -1,7 +1,10 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import { Container, Row, Col } from 'react-bootstrap';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -19,29 +22,34 @@ class App extends React.Component {
     let cityName = event.target.city.value;
     console.log(cityName);
     // let key ='pk.63c388e715285390690165b87c5f6e49';
-    let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=Empire State Building&format=json`
+    let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`
 
     let location = await axios.get(URL);
     // console.log(location.data[0].display_name)
     this.setState({
       display_name: location.data[0].display_name,
       lon: location.data[0].lon,
-      lat: location.data[0].lon,
+      lat: location.data[0].lat,
       showMap: true
 
     })
   }
   render() {
     return (
-      <>
+      <Container>
+          <Row className="mt-5">  
         <h1> City Explorer</h1>
+        </Row>
+        <Row className= "mb-5"> 
         <Form onSubmit={this.getLocationData}>
           <Form.Group >
             <Form.Label  ></Form.Label>
-            <Form.Control placeholder='Empire State Building Location ...' name='city' style={{ width: "20rem" }} />
-            <Button type='submit ' style={{ width: "8rem", height: "2rem", color: "blue" }}> Explore! </Button>
+            <Form.Control placeholder='Enter your location here  ...' name='city' style={{ width: "20rem" }} />
+            <Button type='submit ' > Explore! </Button>
           </Form.Group>
         </Form>
+        </Row>
+        <Row> 
         <p>
           Area Name :
           {this.state.display_name}
@@ -54,10 +62,11 @@ class App extends React.Component {
           ({this.state.lat})
         </p>
         {
-        this.state.showMap &&
-          < img src={`https://maps.locationiq.com/v3/staticmap?key=pk.63c388e715285390690165b87c5f6e49&center=${this.state.lat},${this.state.lon}zoom =18`} alt='map' />
-  }
-      </>
+          this.state.showMap &&
+          < img src={`https://maps.locationiq.com/v3/staticmap?key=pk.63c388e715285390690165b87c5f6e49&center=${this.state.lat},${this.state.lon}`} alt='map' />
+        }
+        </Row>
+      </Container>
     )
   }
 }
