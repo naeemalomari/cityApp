@@ -15,7 +15,7 @@ class App extends React.Component {
       lon: '',
       showMap: false,
       errorMsg :'bad response',
-      dislpayError :false,
+      displayError :false,
 
     }
   }
