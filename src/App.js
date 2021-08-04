@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
@@ -9,6 +11,7 @@ import { Container, Row, Col } from "react-bootstrap";
 class App extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       display_name: "",
       lat: "",
@@ -25,12 +28,12 @@ class App extends React.Component {
 
   getLocationData = async (event) => {
     event.preventDefault();
-    let cityName = event.target.city.value;
+    let cityName = event.target.city.value;    
     try {
       // let key ='pk.63c388e715285390690165b87c5f6e49';
       let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`;
       const location = await axios.get(URL);
-
+      
       this.setState({
         display_name: location.data[0].display_name,
         lon: location.data[0].lon,
@@ -43,34 +46,47 @@ class App extends React.Component {
         displayError: true,
       });
     }
-    this.getWeatherData();
+    finally {
+      this.getWeatherData();
+    }
+    
   };
   getWeatherData = async() => {
+
     try {
       // http://localhost:3001/weather?lat=31.95&lon=35.91&searchQuery=Amman
-      let URL1 = ` http://localhost:3001/weather?lat=${this.lat}&lon=${this.lon}&searchQuery=${this.cityName}`;
+console.log(typeof this.state.lat)
+      let URL1=`http://localhost:3001/weather?lat=${this.state.lat}&lon=${this.state.lon}&searchQuery=Amman`;
       const weatherData = await axios.get(URL1);
        let foreCast = weatherData.data[0];
 
       let arrOfStrings = weatherData.data.map((item) => {
         return `${item.date} ${item.description}`;
       });
+      console.log(arrOfStrings);
       this.setState({
+        cityName: weatherData.cityName,
+        lon:weatherData.lon,
+        lat:weatherData.lat,
         weather: weatherData.data,
         weatherStrings: arrOfStrings,
         foreCast:foreCast,
+        
       });
     } catch (err) {
       console.log(err);
       this.setState({
         weatherError: true,
-        weatherText: "WINTER IS COMING ",
+        weatherText: " WINTER IS COMING ",
       });
     }
   }
   render() {
     return (
       <Container>
+        <Row> 
+        {/* <Weather />  */}
+        </Row>
         <Row className="mt-5">
           <h1> City Explorer</h1>
         </Row>
@@ -102,10 +118,10 @@ class App extends React.Component {
           {this.displayError && this.state.errorMsg}
         </Row>
         <Row className="mr-5">
-           <h1>{this.state.weatherStrings[0]}</h1> 
+        <h1>{this.state.weatherStrings[0]}</h1> 
            <h1>{this.state.weatherStrings[1]} </h1> 
            <h1>{this.state.weatherStrings[2]}</h1> 
-        
+       
         </Row>
       </Container>
     );
