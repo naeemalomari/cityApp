@@ -33,7 +33,7 @@ class App extends React.Component {
       // let key ='pk.63c388e715285390690165b87c5f6e49';
       let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`;
       const location = await axios.get(URL);
-      
+
       this.setState({
         display_name: location.data[0].display_name,
         lon: location.data[0].lon,
@@ -81,6 +81,8 @@ console.log(typeof this.state.lat)
       });
     }
   }
+
+  
   render() {
     return (
       <Container>
