@@ -28,7 +28,7 @@ class App extends React.Component {
 
   getLocationData = async (event) => {
     event.preventDefault();
-    let cityName = event.target.city.value;    
+    let cityName = event.target.city.value;
     try {
       // let key ='pk.63c388e715285390690165b87c5f6e49';
       let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`;
@@ -42,7 +42,7 @@ class App extends React.Component {
       });
     } catch {
       this.setState({
-        displayMap: false,
+        displayMap: true,
         displayError: true,
       });
     }
@@ -56,8 +56,8 @@ class App extends React.Component {
     try {
       // http://localhost:3001/weather?lat=31.95&lon=35.91&searchQuery=Amman
 console.log(typeof this.state.lat)
-      let URL1=`http://localhost:3001/weather?lat=${this.state.lat}&lon=${this.state.lon}&searchQuery=Amman`;
-      const weatherData = await axios.get(URL1);
+      // let URL1=`http://localhost:3001/weather?lat=${this.state.lat}&lon=${this.state.lon}&searchQuery=Amman`;
+      const weatherData = await axios.get(`http://localhost:3001/weather?lat=31.95&lon=35.91&searchQuery=Amman`);
        let foreCast = weatherData.data[0];
 
       let arrOfStrings = weatherData.data.map((item) => {
@@ -71,7 +71,7 @@ console.log(typeof this.state.lat)
         weather: weatherData.data,
         weatherStrings: arrOfStrings,
         foreCast:foreCast,
-        
+        // showMap:true,
       });
     } catch (err) {
       console.log(err);
@@ -81,8 +81,6 @@ console.log(typeof this.state.lat)
       });
     }
   }
-
-  
   render() {
     return (
       <Container>
@@ -98,7 +96,7 @@ console.log(typeof this.state.lat)
               <Form.Label></Form.Label>
               <Form.Control
                 placeholder="Enter your location here  ..."
-                name="city"
+                name="city" 
                 style={{ width: "20rem" }}
               />
               <Button type="submit "> Explore! </Button>
