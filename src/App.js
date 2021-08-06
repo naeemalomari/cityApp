@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 // import Weather from "./component/Weather";
+import Movies from './component/Movies';
 
 class App extends React.Component {
   constructor(props) {
@@ -23,23 +24,36 @@ class App extends React.Component {
       weatherError: false,
       weatherText: "",
       weatherStrings: [],
+      moviesStrings: [],
+      moviesError:false,
+      moviesTest:'',
+      moviesError:false,
+
     };
   }
+
+
+
+
 
   getLocationData = async (event) => {
     event.preventDefault();
     let cityName = event.target.city.value;
+
     try {
       // let key ='pk.63c388e715285390690165b87c5f6e49';
+      
       let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`;
       const location = await axios.get(URL);
-
+console.log(location);
       this.setState({
         display_name: location.data[0].display_name,
         lon: location.data[0].lon,
         lat: location.data[0].lat,
         showMap: true,
       });
+      // this.getWeatherData();
+      console.log(this.state)
     } catch {
       this.setState({
         displayMap: true,
@@ -48,30 +62,29 @@ class App extends React.Component {
     }
     finally {
       this.getWeatherData();
+     
     }
-    
+
   };
-  getWeatherData = async() => {
+  getWeatherData = async () => {
 
     try {
       // http://localhost:3001/weather?lat=31.95&lon=35.91&searchQuery=Amman
-console.log(typeof this.state.lat)
+      console.log(typeof this.state.lat)
       // let URL1=`http://localhost:3001/weather?lat=${this.state.lat}&lon=${this.state.lon}&searchQuery=Amman`;
-      const weatherData = await axios.get(`http://localhost:3001/weather?lat=31.95&lon=35.91&searchQuery=Amman`);
-       let foreCast = weatherData.data[0];
+      const weatherData = await axios.get(`http://localhost:3001/weather?lat=31.95&lon=35.91&city_name=Amman`);
+      let foreCast = weatherData.data[0];
 
       let arrOfStrings = weatherData.data.map((item) => {
-        return `${item.date} ${item.description}`;
+        return `${item.datetime} ${item.description}`;
       });
       console.log(arrOfStrings);
       this.setState({
         cityName: weatherData.cityName,
-        lon:weatherData.lon,
-        lat:weatherData.lat,
         weather: weatherData.data,
         weatherStrings: arrOfStrings,
-        foreCast:foreCast,
-        // showMap:true,
+        foreCast: foreCast,
+        
       });
     } catch (err) {
       console.log(err);
@@ -80,12 +93,43 @@ console.log(typeof this.state.lat)
         weatherText: " WINTER IS COMING ",
       });
     }
+    finally {
+
+      this.getMoviesData();
+    }
+  }
+  getMoviesData = async () => {
+
+    try {
+
+      
+      const moviesData = await axios.get(`http://localhost:3001/movies?city=${this.state.city_name}`);
+      let foreCast1 = moviesData.data[0];
+
+      let arrOfMovies = moviesData.data.map((item) => {
+        return `${item.title} ${item.overview} ${item.vote_average}${this.vote_count}${this.poster_path}${this.popularity}${this.release_date} `;
+      });
+      console.log(arrOfMovies);
+      this.setState({
+        cityName: moviesData.cityName,
+        movies: moviesData.data,
+        moviesStrings: arrOfMovies,
+        foreCast1: foreCast1,
+
+        // showMap:true,
+      });
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        moviesError: true,
+        moviesText: " WAIT TO YOUR FAVORITE MOVIE  ",
+      });
+    }
   }
   render() {
     return (
       <Container>
-        <Row> 
-        {/* <Weather />  */}
+        <Row>
         </Row>
         <Row className="mt-5">
           <h1> City Explorer</h1>
@@ -96,7 +140,7 @@ console.log(typeof this.state.lat)
               <Form.Label></Form.Label>
               <Form.Control
                 placeholder="Enter your location here  ..."
-                name="city" 
+                name="city"
                 style={{ width: "20rem" }}
               />
               <Button type="submit "> Explore! </Button>
@@ -118,13 +162,22 @@ console.log(typeof this.state.lat)
           {this.displayError && this.state.errorMsg}
         </Row>
         <Row className="mr-5">
-        <h1>{this.state.weatherStrings[0]}</h1> 
-           <h1>{this.state.weatherStrings[1]} </h1> 
-           <h1>{this.state.weatherStrings[2]}</h1> 
-       
+          <h1>{this.state.weatherStrings[0]}</h1>
+          <h1>{this.state.weatherStrings[1]} </h1>
+          <h1>{this.state.weatherStrings[2]}</h1>
+          <h1>{this.state.weatherStrings[3]}</h1>
+          <h1>{this.state.weatherStrings[4]}</h1>
         </Row>
+        <Row>
+        
+        </Row>
+        
+
+
+          
+          
       </Container>
-    );
+      );
   }
 }
-export default App;
+        export default App;
