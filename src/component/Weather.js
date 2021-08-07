@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 class Weather extends React.Component {
   render() {
     return (
-    <>
-    <h1></h1>
+      <>
 
-    </>
+        <h1>HELLO FROM OUR WEATHER NEWS :D</h1>
+      </>
     );
   }
 }
