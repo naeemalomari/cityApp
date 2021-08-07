@@ -167,7 +167,15 @@ class App extends React.Component {
           <h1>{this.state.weatherStrings[4]}</h1>
         </Row>
         <Row>
-            <p> {this.state.moviesStrings[0]} </p>
+            <h1> {this.state.moviesStrings[0]} </h1>
+            {this.state.showMap && (  
+               <img 
+               className="img-thumbnail ,rounded mx-auto d-block , mb-30"
+               src={`/tzve3LD534wsCnhOrSqgJ1mnRma.jpg`}
+               alt="movie"
+               style={{ width: "18rem" }}
+               /> 
+            )}
         </Row>
       </Container>
     );
