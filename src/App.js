@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 // import Weather from "./component/Weather";
-import Movies from './component/Movies';
+// import Movies from './component/Movies';
 
 class App extends React.Component {
   constructor(props) {
@@ -25,9 +25,9 @@ class App extends React.Component {
       weatherText: "",
       weatherStrings: [],
       moviesStrings: [],
-      moviesError:false,
-      moviesTest:'',
-      moviesError:false,
+      moviesError: false,
+      moviesTest: '',
+      moviesError: false,
 
     };
   }
@@ -42,10 +42,10 @@ class App extends React.Component {
 
     try {
       // let key ='pk.63c388e715285390690165b87c5f6e49';
-      
+
       let URL = `https://eu1.locationiq.com/v1/search.php?key=pk.63c388e715285390690165b87c5f6e49&q=${cityName}&format=json`;
       const location = await axios.get(URL);
-console.log(location);
+      console.log(location);
       this.setState({
         display_name: location.data[0].display_name,
         lon: location.data[0].lon,
@@ -62,29 +62,31 @@ console.log(location);
     }
     finally {
       this.getWeatherData();
-     
+      this.getMoviesData();
+
     }
 
   };
   getWeatherData = async () => {
 
     try {
-      // http://localhost:3001/weather?lat=31.95&lon=35.91&searchQuery=Amman
+      // http://localhost:3001/weather?lat=31.95&lon=35.91&city_name=Amman
       console.log(typeof this.state.lat)
-      // let URL1=`http://localhost:3001/weather?lat=${this.state.lat}&lon=${this.state.lon}&searchQuery=Amman`;
-      const weatherData = await axios.get(`http://localhost:3001/weather?lat=31.95&lon=35.91&city_name=Amman`);
+      let URL1=`http://localhost:3001/weather?lat=31.95&lon=35.91&city_name=Amman`;
+      const weatherData = await axios.get(URL1);
       let foreCast = weatherData.data[0];
 
-      let arrOfStrings = weatherData.data.map((item) => {
+      let arrOfStrings = weatherData.data.map(item => {
         return `${item.datetime} ${item.description}`;
+
       });
       console.log(arrOfStrings);
       this.setState({
-        cityName: weatherData.cityName,
+        city_name: weatherData.city_name,
         weather: weatherData.data,
         weatherStrings: arrOfStrings,
         foreCast: foreCast,
-        
+
       });
     } catch (err) {
       console.log(err);
@@ -93,20 +95,17 @@ console.log(location);
         weatherText: " WINTER IS COMING ",
       });
     }
-    finally {
-
-      this.getMoviesData();
-    }
   }
+  
+
+
   getMoviesData = async () => {
 
     try {
-
-      
-      const moviesData = await axios.get(`http://localhost:3001/movies?city=${this.state.city_name}`);
+      const moviesData = await axios.get(`http://localhost:3001/movies?city=${this.state.cityName}`);
       let foreCast1 = moviesData.data[0];
 
-      let arrOfMovies = moviesData.data.map((item) => {
+      let arrOfMovies = moviesData.data.map(item => {
         return `${item.title} ${item.overview} ${item.vote_average}${this.vote_count}${this.poster_path}${this.popularity}${this.release_date} `;
       });
       console.log(arrOfMovies);
@@ -115,8 +114,7 @@ console.log(location);
         movies: moviesData.data,
         moviesStrings: arrOfMovies,
         foreCast1: foreCast1,
-
-        // showMap:true,
+        showMap:true
       });
     } catch (err) {
       console.log(err);
@@ -169,15 +167,10 @@ console.log(location);
           <h1>{this.state.weatherStrings[4]}</h1>
         </Row>
         <Row>
-        
+            <p> {this.state.moviesStrings[0]} </p>
         </Row>
-        
-
-
-          
-          
       </Container>
-      );
+    );
   }
 }
-        export default App;
+export default App;
