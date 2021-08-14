@@ -72,7 +72,7 @@ class App extends React.Component {
     try {
       // http://localhost:3001/weather?lat=31.95&lon=35.91&city_name=Amman
       console.log(typeof this.state.lat)
-      let URL1=`http://localhost:3001/weather?lat=31.95&lon=35.91&city_name=Amman`;
+      let URL1=`https://cityapplication.herokuapp.com/weather?lat=31.95&lon=35.91&city_name=Amman`;
       const weatherData = await axios.get(URL1);
       let foreCast = weatherData.data[0];
 
@@ -102,7 +102,7 @@ class App extends React.Component {
   getMoviesData = async () => {
 
     try {
-      const moviesData = await axios.get(`http://localhost:3001/movies?city=${this.state.cityName}`);
+      const moviesData = await axios.get(`https://cityapplication.herokuapp.com/movies?city=${this.state.cityName}`);
       let foreCast1 = moviesData.data[0];
 
       let arrOfMovies = moviesData.data.map(item => {
